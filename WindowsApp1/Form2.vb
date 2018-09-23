@@ -236,6 +236,7 @@ Public Class Form2
                         End Using
                     End Using
                     MessageBox.Show("Schedule reserved on : " + DayS + "/" + MonthS + "/" + YearS)
+                    Test()
                 End If
             End If
 
@@ -278,10 +279,48 @@ Public Class Form2
         MonthCalendar1.Show()
 
     End Sub
+    Private Sub Test()
+        DataGridView1.Refresh()
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Me.Close()
-        Form1.Show()
-        Form1.usnText.Select()
+
+    End Sub
+
+    Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
+        Dim conn As New SqlConnection
+        conn.ConnectionString = "Server= MADHAV-PC\SQLEXPRESS; Database = vb; Integrated Security = true"
+
+        Dim cmd As New SqlCommand("SELECT * FROM Booking_Details where scheduler_name = '" + Me.Text + "'", conn)
+
+        Dim adapter As New SqlDataAdapter(cmd)
+
+        Dim table As New DataTable
+
+        adapter.Fill(table)
+
+        DataGridView1.DataSource = table
+    End Sub
+
+    Private Sub ToolStripMenuItem3_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem3.Click
+        Dim conn As New SqlConnection
+        conn.ConnectionString = "Server= MADHAV-PC\SQLEXPRESS; Database = vb; Integrated Security = true"
+
+        Dim cmd As New SqlCommand("SELECT * FROM Booking_Details", conn)
+
+        Dim adapter As New SqlDataAdapter(cmd)
+
+        Dim table As New DataTable
+
+        adapter.Fill(table)
+
+        DataGridView1.DataSource = table
+    End Sub
+
+    Private Sub ToolStripMenuItem4_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem4.Click
+        msg = MsgBox("Do you really want to logout?", MsgBoxStyle.YesNo)
+        If msg = MsgBoxResult.Yes Then
+            Me.Close()
+            Form1.Show()
+            Form1.usnText.Select()
+        End If
     End Sub
 End Class
